@@ -6,6 +6,7 @@ metadata:
   labels:
     app: api
 spec:
+  jobLabel: app
   selector:
     matchLabels:
       app: api

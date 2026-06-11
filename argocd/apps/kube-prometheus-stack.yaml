@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: kube-prometheus-stack
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
@@ -14,6 +16,30 @@ spec:
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
+            serviceMonitorNamespaceSelector: {}
+            ruleSelectorNilUsesHelmValues: false
+            ruleNamespaceSelector: {}
+        alertmanager:
+          config:
+            global:
+              smtp_smarthost: smtp.gmail.com:587
+              smtp_from: quyetmarcus04@gmail.com
+              smtp_auth_username: quyetmarcus04@gmail.com
+              smtp_auth_password: CHANGE_ME_GMAIL_APP_PASSWORD
+              smtp_require_tls: true
+            route:
+              group_by:
+                - alertname
+                - service
+              group_wait: 10s
+              group_interval: 1m
+              repeat_interval: 4h
+              receiver: personal-email
+            receivers:
+              - name: personal-email
+                email_configs:
+                  - to: quyetmarcus04@gmail.com
+                    send_resolved: true
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

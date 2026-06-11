@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: api-slo
+  namespace: demo
+  labels:
+    app: api
+spec:
+  groups:
+    - name: api.slo
+      rules:
+        - alert: ApiSloErrorBudgetBurn
+          expr: |
+            (
+              sum(rate(flask_http_request_total{namespace="demo",job="api",status=~"5.."}[5m]))
+              /
+              clamp_min(sum(rate(flask_http_request_total{namespace="demo",job="api"}[5m])), 0.001)
+            ) > 0.01
+          for: 1m
+          labels:
+            severity: critical
+            service: api
+          annotations:
+            summary: "API SLO is below 99%"
+            description: "More than 1% of API requests returned 5xx during the last 5 minutes."
