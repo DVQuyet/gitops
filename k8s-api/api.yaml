@@ -15,7 +15,7 @@ spec:
       labels:
         app: api
       annotations:
-        canary-retry: "v3-bad"
+        canary-retry: "v2-1"
     spec:
       containers:
         - name: api
@@ -26,9 +26,9 @@ spec:
               containerPort: 9090
           env:
             - name: ERROR_RATE
-              value: "1"
+              value: "0"
             - name: VERSION
-              value: "v3"
+              value: "v2"
           readinessProbe:
             httpGet:
               path: /healthz
