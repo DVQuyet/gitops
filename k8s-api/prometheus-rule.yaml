@@ -12,9 +12,9 @@ spec:
         - alert: ApiSloErrorBudgetBurn
           expr: |
             (
-              sum(rate(flask_http_request_total{namespace="demo",job="api",status=~"5.."}[5m]))
+              (sum(rate(flask_http_request_total{namespace="demo",job="api",status=~"5.."}[5m])) or vector(0))
               /
-              clamp_min(sum(rate(flask_http_request_total{namespace="demo",job="api"}[5m])), 0.001)
+              clamp_min((sum(rate(flask_http_request_total{namespace="demo",job="api"}[5m])) or vector(0)), 0.001)
             ) > 0.01
           for: 1m
           labels:
