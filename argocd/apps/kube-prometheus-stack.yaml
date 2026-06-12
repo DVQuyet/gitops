@@ -36,6 +36,7 @@ spec:
               repeat_interval: 4h
               receiver: personal-email
             receivers:
+              - name: "null"
               - name: personal-email
                 email_configs:
                   - to: 0973018988a@gmail.com
