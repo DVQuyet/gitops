@@ -9,16 +9,17 @@ spec:
   metrics:
     - name: api-success-rate
       interval: 30s
-      count: 2
+      count: 3
       failureLimit: 0
       successCondition: result[0] >= 0.99
+      failureCondition: result[0] < 0.99
       provider:
         prometheus:
           address: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
           query: |
             1 -
             (
-              (sum(rate(flask_http_request_total{namespace="demo",job="api",status=~"5.."}[1m])) or vector(0))
+              (sum(rate(flask_http_request_total{namespace="demo",job="api",status=~"5.."}[2m])) or vector(0))
               /
-              clamp_min((sum(rate(flask_http_request_total{namespace="demo",job="api"}[1m])) or vector(0)), 0.001)
+              clamp_min((sum(rate(flask_http_request_total{namespace="demo",job="api"}[2m])) or vector(0)), 0.001)
             )

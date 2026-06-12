@@ -9,17 +9,21 @@ spec:
   groups:
     - name: api.slo
       rules:
-        - alert: ApiSloErrorBudgetBurn
+        - record: api:request_success_rate:5m
           expr: |
+            1 -
             (
               (sum(rate(flask_http_request_total{namespace="demo",job="api",status=~"5.."}[5m])) or vector(0))
               /
               clamp_min((sum(rate(flask_http_request_total{namespace="demo",job="api"}[5m])) or vector(0)), 0.001)
-            ) > 0.01
+            )
+        - alert: ApiSloErrorBudgetBurn
+          expr: |
+            api:request_success_rate:5m < 0.99
           for: 1m
           labels:
             severity: critical
             service: api
           annotations:
             summary: "API SLO is below 99%"
-            description: "More than 1% of API requests returned 5xx during the last 5 minutes."
+            description: "API success rate is below 99% for more than 1 minute. Check the Rollout canary and revert the Git commit if needed."

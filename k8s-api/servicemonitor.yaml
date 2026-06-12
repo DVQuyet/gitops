@@ -7,6 +7,9 @@ metadata:
     app: api
 spec:
   jobLabel: app
+  namespaceSelector:
+    matchNames:
+      - demo
   selector:
     matchLabels:
       app: api
@@ -14,3 +17,4 @@ spec:
     - port: http
       path: /metrics
       interval: 15s
+      scrapeTimeout: 10s

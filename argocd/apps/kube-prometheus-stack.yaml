@@ -23,9 +23,9 @@ spec:
           config:
             global:
               smtp_smarthost: smtp.gmail.com:587
-              smtp_from: quyetmarcus04@gmail.com
-              smtp_auth_username: quyetmarcus04@gmail.com
-              smtp_auth_password: CHANGE_ME_GMAIL_APP_PASSWORD
+              smtp_from: 0973018988a@gmail.com
+              smtp_auth_username: 0973018988a@gmail.com
+              smtp_auth_password: rvduopodnlkeohsx
               smtp_require_tls: true
             route:
               group_by:
@@ -38,7 +38,7 @@ spec:
             receivers:
               - name: personal-email
                 email_configs:
-                  - to: quyetmarcus04@gmail.com
+                  - to: 0973018988a@gmail.com
                     send_resolved: true
   destination:
     server: https://kubernetes.default.svc
